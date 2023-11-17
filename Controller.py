@@ -8,14 +8,17 @@ import customtkinter as ctk
 from Model import database
 from Model import functions
 
+# For Views 
 from View import main_page
 
+# For Message Passing  : 
+from pubsub import pub
 
 
-def main_page(): 
-    pass
-
+def main():
+    main_page.Main_Page() 
+    
 
 
 if __name__ == '__main__':
-    main_page()
+    main()
