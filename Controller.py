@@ -1,3 +1,8 @@
+import sys
+
+sys.path.append('View')
+
+
 import tkinter as tk 
 from tkinter import ttk 
 import customtkinter as ctk
@@ -15,8 +20,12 @@ from View import main_page
 from pubsub import pub
 
 
+
+
+
+
 def main():
-    main_page.Main_Page() 
+    main_page.Main_Page(400 , 600) 
     
 
 

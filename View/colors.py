@@ -6,3 +6,4 @@ tab_color_unused  = '#101010'
 tab_color_used  = '#212121'
 bottom_base_color = '#272727'
 upper_tab_color = '#000000' # Black color 
+red_color  = 'red' # will change this later to the hex code 
