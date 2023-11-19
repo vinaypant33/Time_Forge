@@ -3,6 +3,7 @@ from tkinter import ttk
 import colors
 import fonts
 import styles
+import customtkinter as ctk
 
 import messagebox # for making messageboxes available on temnporary basis 
 from ctypes import windll
@@ -10,6 +11,8 @@ from ctypes import windll
 # Importing Library for Message Passing :  Pubsub
 from pubsub import pub
 
+# importing pre made libraries : 
+import planned_task
 
 class Main_Page():
 
@@ -43,17 +46,30 @@ class Main_Page():
         self.main_app.destroy()
     
     def max_button_clicked(self):
-        messagebox.showerror("Task Forge" , "Unable to maxmize the app : maximize function disabled")
+        messagebox.showerror("Task Forge" , "Unable to maxmize the app : Maximize function disabled")
+
+    def adding_text(self ):
+        self.getting_text  = self.enter_text.get()
+        
+        self.enter_text.delete(0 , tk.END)
+        self.current_index=+1
+        planned_task.Planned_Task(self.scrollable_frame , 100  , 100 , self.getting_text ,self.current_index)
+    
+    def adding_text_1(self , event):
+        self.getting_text  = self.enter_text.get()
+       
+        self.enter_text.delete(0 , tk.END)
+        self.current_index=+1
+        planned_task.Planned_Task(self.scrollable_frame , 100  , 100 , self.getting_text ,self.current_index)
 
     def __init__(self , width  , height) -> None:
         self.main_app = tk.Tk()
         self.width  = width 
         self.height  = height
 
+        self.current_index = 0
 
         self.main_app.overrideredirect(True)
-
-
 
         # setting up the geometry and setting up the app in the center of the screen : 
         self.x_position  = (self.main_app.winfo_screenwidth() //2 )   - ( self.width  // 2 )
@@ -77,14 +93,17 @@ class Main_Page():
         self.basetitlebar.pack_propagate(0)
         # making settings , add button for bottom title bar : 
         self.settings_button  = tk.Button(self.basetitlebar , text="\u2699" )
-        self.add_task_button   = tk.Button(self.basetitlebar , text="\u002B" , font=fonts.super_small_bold)
+        self.add_task_button   = tk.Button(self.basetitlebar , text="\u002B" , font=fonts.super_small_bold , command=self.adding_text)
+
+        # Text box for the bottom basetitlebar and  make text box for entering in the work app  :z
+        self.enter_text = tk.Entry(self.basetitlebar  , background=colors.app_base , bd= 2 ,  width=53 , foreground=colors.text , relief='flat' ,  highlightthickness=2, highlightcolor=colors.app_base) # Will change this code later make seperate frame for adding the task data
 
         # Frame for the canvas ,  clock and current text with time : 
-        self.add_task_button.configure(width=2)
-        self.clock_main_frame  = tk.Frame(self.main_app , background=colors.text , height=150)
+        self.add_task_button.configure(width=3)
+        self.clock_main_frame  = tk.Frame(self.main_app , background=colors.app_base , height=150 )
         self.clock_main_frame.pack_propagate(0)
         
-        self.seperator   = tk.Frame(self.main_app , height=2 , background=colors.text) # To change the seperator later for more robust look and feel : make the whole app more material design
+        self.seperator   = tk.Frame(self.main_app , height=2 , background=colors.upper_tab_color) # To change the seperator later for more robust look and feel : make the whole app more material design
 
         self.button_frame = tk.Frame(self.main_app  , height=60 , background=colors.app_base ) # will give this color later when testing the
         self.button_frame.pack_propagate(0)
@@ -92,7 +111,10 @@ class Main_Page():
         self.button_under_frame.pack_propagate(0)
 
         # Making the Main frame in which the three frames will be placed : 
-        self.work_frame = tk.Frame(self.main_app  , background='red')
+        self.work_frame = tk.Frame(self.main_app  , background=colors.app_base) # setting another frame from custom tkitner inside this frame : it was red and will change this to app color later
+     
+       
+        self.scrollable_frame  = ctk.CTkScrollableFrame(self.work_frame , fg_color='transparent',  width=400 , height=300)
 
 
         # Three buttons are to be added as : planned task , current doing  , completed tasks
@@ -108,13 +130,19 @@ class Main_Page():
         self.close_button.configure(height=1 , width=4)
         self.max_button.configure(height=1, width=4)
         self.min_button.configure(height=1 , width=4)
+        
 
 
-        styles.Styles.button_styles(self.close_button , colors.tab_color_used , colors.text , colors.tab_color_unused  , colors.red_color)
-        styles.Styles.button_styles(self.max_button , colors.tab_color_used , colors.text , colors.tab_color_unused  , colors.text)
-        styles.Styles.button_styles(self.min_button , colors.tab_color_used , colors.text , colors.tab_color_unused  , colors.text)
+        styles.Styles.button_styles(self.close_button , colors.upper_tab_color , colors.text , colors.tab_color_unused  , colors.red_color)
+        styles.Styles.button_styles(self.max_button , colors.upper_tab_color , colors.text , colors.tab_color_unused  , colors.text)
+        styles.Styles.button_styles(self.min_button , colors.upper_tab_color, colors.text , colors.tab_color_unused  , colors.text)
         styles.Styles.button_styles(self.settings_button , colors.upper_tab_color , colors.text  , colors.tab_color_unused , colors.text)
         styles.Styles.button_styles(self.add_task_button , colors.upper_tab_color  , colors.text , colors.tab_color_unused , colors.text)
+
+        styles.Styles.button_styles(self.planned_task_button , colors.upper_tab_color , colors.text , colors.tab_color_unused  , colors.red_color)
+        styles.Styles.button_styles(self.completed_task_button , colors.upper_tab_color , colors.text , colors.tab_color_unused  , colors.red_color)
+        styles.Styles.button_styles(self.current_task_button , colors.upper_tab_color , colors.text , colors.tab_color_unused  , colors.red_color)
+        
 
 
 
@@ -124,6 +152,7 @@ class Main_Page():
 
         self.titlebar.bind("<Button-1>" , self.mouse_click)
         self.titlebar.bind("<B1-Motion>" , self.mouse_move)
+        self.enter_text.bind("<Return>" , self.adding_text_1)
 
        
         
@@ -137,8 +166,14 @@ class Main_Page():
         self.min_button.pack(side='right' , padx = 0)
 
         self.basetitlebar.pack(side='bottom' ,padx=0  ,fill='x')
-        self.settings_button.pack(side='left' , padx = 5 , pady = 5)
-        self.add_task_button.pack(side='right'  , padx = 5 , pady=4)
+        # self.settings_button.pack(side='left' , padx = 5 , pady = 5)
+        self.settings_button.grid(row=0 , column= 0 ,padx=4 , pady=5)
+
+        # self.enter_text.pack()
+        self.enter_text.grid(row=0 , column=1 , padx=4 , pady=5)
+
+        # self.add_task_button.pack(side='right'  , padx = 2 , pady=4)
+        self.add_task_button.grid(row=0 , column=2 , padx=4  , pady=5)
 
         self.clock_main_frame.pack(fill='x')
         self.seperator.pack(fill='x')
@@ -153,7 +188,7 @@ class Main_Page():
         self.completed_task_button.pack(side='left', padx=10)
 
         self.work_frame.pack(fill='both' , padx=10 , pady=10 , expand=True)
-
+        self.scrollable_frame.pack()
 
 
 
