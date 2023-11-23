@@ -22,12 +22,19 @@ class Planned_Task():
         self.text.insert(tk.END , self.current_text)
         self.text.configure(state="disabled")
         self.text.pack(padx=5 , pady=5)
+        
+        # setting up a temporary button for deleting the currnet task : 
+        
 
         # self.master.configure(background = colors.app_base )
         self.text.configure(background=colors.app_base , foreground=colors.text)
 
 
         self.master.mainloop()
+    
+    def delete_current_instance(self):
+        self.text.destroy()
+        
 
 
 

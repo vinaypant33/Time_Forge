@@ -47,6 +47,18 @@ class Main_Page():
     
     def max_button_clicked(self):
         messagebox.showerror("Task Forge" , "Unable to maxmize the app : Maximize function disabled")
+    
+    def min_button_clicked(self):
+        self.main_app.overrideredirect(False)
+        self.main_app.wm_iconify()
+        self.main_app.bind('<FocusIn>' , self.on_deiconify)
+    
+    def on_deiconify(self , event):
+        if self.main_app.wm_state() == 'normal' and self.main_app.overrideredirect() != True : 
+                self.main_app.overrideredirect(True)
+                self.set_appwindow(self.main_app)
+                self.main_app.deiconify()
+        
 
     def adding_text(self ):
         self.getting_text  = self.enter_text.get()
@@ -66,6 +78,9 @@ class Main_Page():
         self.main_app = tk.Tk()
         self.width  = width 
         self.height  = height
+        
+        # calling the after functiion to call the min button for showing the bottom icon  : 
+        self.main_app.after(10 , lambda  : self.set_appwindow(self.main_app))
 
         self.current_index = 0
 
@@ -86,7 +101,7 @@ class Main_Page():
         # Buttons for the titlebar and messgae for the max button : 
         self.close_button  = tk.Button(self.titlebar , text='\u2716' , command=self.closing_app)
         self.max_button   = tk.Button(self.titlebar , text = u"\U0001F5D6" , command=self.max_button_clicked)
-        self.min_button   = tk.Button(self.titlebar  , text="\u23AF")
+        self.min_button   = tk.Button(self.titlebar  , text="\u23AF" , command = self.min_button_clicked)
         
         # Bottom base titlebar and its controls : 
         self.basetitlebar = tk.Frame(self.main_app , height= 35  , background=colors.upper_tab_color) 
@@ -112,7 +127,9 @@ class Main_Page():
 
         # Making the Main frame in which the three frames will be placed : 
         self.work_frame = tk.Frame(self.main_app  , background=colors.app_base) # setting another frame from custom tkitner inside this frame : it was red and will change this to app color later
-     
+
+        # Making two more frames on Temporary basis for changing the frames when the buttons are clicked : 
+        
        
         self.scrollable_frame  = ctk.CTkScrollableFrame(self.work_frame , fg_color='transparent',  width=400 , height=300)
 

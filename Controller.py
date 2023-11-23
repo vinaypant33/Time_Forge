@@ -5,7 +5,7 @@ sys.path.append('View')
 
 import tkinter as tk 
 from tkinter import ttk 
-import customtkinter as ctk
+
 
 
 
