@@ -13,6 +13,7 @@ from pubsub import pub
 
 # importing pre made libraries : 
 import planned_task
+import current_task
 
 class Main_Page():
 
@@ -65,14 +66,26 @@ class Main_Page():
         
         self.enter_text.delete(0 , tk.END)
         self.current_index=+1
-        planned_task.Planned_Task(self.scrollable_frame , 100  , 100 , self.getting_text ,self.current_index)
+        planned_task.Planned_Task(self.scrollable_frame , 40  , 100 , self.getting_text ,self.current_index)
     
     def adding_text_1(self , event):
         self.getting_text  = self.enter_text.get()
        
         self.enter_text.delete(0 , tk.END)
         self.current_index=+1
-        planned_task.Planned_Task(self.scrollable_frame , 100  , 100 , self.getting_text ,self.current_index)
+        planned_task.Planned_Task(self.scrollable_frame , 40  , 100 , self.getting_text ,self.current_index)
+        
+    def frame_change(self , passed_text):
+        if passed_text == "currenttask":
+            self.work_frame.pack_forget()
+            # self.scrollable_frame  = ctk.CTkScrollableFrame(self.work_frame , fg_color='transparent',  width=400 , height=300)
+            self.scrollable_frame.pack_forget()
+            self.current_task_frame = tk.Frame(self.main_app , background=colors.app_base)
+            self.scrollable_frame  = ctk.CTkScrollableFrame(self.current_task_frame, fg_color='transparent',  width=400 , height=300)
+            self.scrollable_frame.pack()
+            current_task.Current_task(self.scrollable_frame , 100 ,100 )
+            
+            
 
     def __init__(self , width  , height) -> None:
         self.main_app = tk.Tk()
@@ -137,7 +150,7 @@ class Main_Page():
         # Three buttons are to be added as : planned task , current doing  , completed tasks
         self.planned_task_button  = tk.Button(self.button_under_frame , text="Planned Task" )
         self.current_seperator_1  = ttk.Separator(self.button_under_frame , orient='vertical')
-        self.current_task_button  = tk.Button(self.button_under_frame , text="Current Task")
+        self.current_task_button  = tk.Button(self.button_under_frame , text="Current Task" , command=lambda : self.frame_change("currenttask"))
         self.current_seperator_2  = ttk.Separator(self.button_under_frame , orient='vertical')
         self.completed_task_button  = tk.Button(self.button_under_frame , text="Completed Task")
 
