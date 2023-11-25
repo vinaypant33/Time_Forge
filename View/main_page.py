@@ -4,6 +4,7 @@ import colors
 import fonts
 import styles
 import customtkinter as ctk
+from tkinter import Menu
 
 import messagebox # for making messageboxes available on temnporary basis 
 from ctypes import windll
@@ -14,6 +15,7 @@ from pubsub import pub
 # importing pre made libraries : 
 import planned_task
 import current_task
+import tooltip
 
 class Main_Page():
 
@@ -62,28 +64,55 @@ class Main_Page():
         
 
     def adding_text(self ):
-        self.getting_text  = self.enter_text.get()
+        self.char_length = len(self.enter_text.get())
+        if self.char_length < 1 : 
+            messagebox.showerror("Task Forge" , "Please Enter Task : Empty Task Name")
+        else:
+            if self.planned_task_frame.winfo_ismapped() == True:
+                self.getting_text  = self.enter_text.get()
+                self.enter_text.delete(0  ,tk.END)
+                self.current_index+=1
+                planned_task.Planned_Task(self.planned_task_scrollable_frame , 40  , 40 ,self.getting_text , self.current_index)
+            else:
+                self.enter_text.delete(0  , tk.END)
         
-        self.enter_text.delete(0 , tk.END)
-        self.current_index=+1
-        planned_task.Planned_Task(self.scrollable_frame , 40  , 100 , self.getting_text ,self.current_index)
     
     def adding_text_1(self , event):
-        self.getting_text  = self.enter_text.get()
-       
-        self.enter_text.delete(0 , tk.END)
-        self.current_index=+1
-        planned_task.Planned_Task(self.scrollable_frame , 40  , 100 , self.getting_text ,self.current_index)
+        self.char_length = len(self.enter_text.get())
+        if self.char_length < 1 : 
+            messagebox.showerror("Task Forge" , "Please Enter Task : Empty Task Name")
+        else:
+            if self.planned_task_frame.winfo_ismapped() == True:
+                self.getting_text  = self.enter_text.get()
+                self.enter_text.delete(0  ,tk.END)
+                self.current_index+=1
+                planned_task.Planned_Task(self.planned_task_scrollable_frame , 40  , 40 ,self.getting_text , self.current_index)
+            else:
+                self.enter_text.delete(0  , tk.END)
+                
         
-    def frame_change(self , passed_text):
+    def frame_change(self , passed_text): # check the function and change the frame with the click of the button  :
         if passed_text == "currenttask":
-            self.work_frame.pack_forget()
-            # self.scrollable_frame  = ctk.CTkScrollableFrame(self.work_frame , fg_color='transparent',  width=400 , height=300)
-            self.scrollable_frame.pack_forget()
-            self.current_task_frame = tk.Frame(self.main_app , background=colors.app_base)
-            self.scrollable_frame  = ctk.CTkScrollableFrame(self.current_task_frame, fg_color='transparent',  width=400 , height=300)
-            self.scrollable_frame.pack()
-            current_task.Current_task(self.scrollable_frame , 100 ,100 )
+            self.planned_task_frame.pack_forget()
+            self.planned_task_scrollable_frame.pack_forget()
+            self.completed_task_frame.pack_forget()
+            self.completed_task_scrollable_frame.pack_forget()
+            self.current_task_frame.pack(fill='both' , padx=10 , pady=10 , expand=True)
+            self.current_task_scrollable_frame.pack()
+        elif passed_text == "plannedtask" : 
+            self.current_task_frame.pack_forget()
+            self.current_task_scrollable_frame.pack_forget()
+            self.completed_task_frame.pack_forget()
+            self.completed_task_scrollable_frame.pack_forget()
+            self.planned_task_frame.pack(fill='both' , padx=10 , pady=10 , expand=True)
+            self.planned_task_scrollable_frame.pack()
+        elif passed_text == "completedtask":
+            self.planned_task_frame.pack_forget()
+            self.planned_task_scrollable_frame.pack_forget()
+            self.current_task_frame.pack_forget()
+            self.current_task_scrollable_frame.pack_forget()
+            self.completed_task_frame.pack(fill='both' , padx=10 , pady=10 , expand=True)
+            self.completed_task_scrollable_frame.pack()
             
             
 
@@ -96,6 +125,7 @@ class Main_Page():
         self.main_app.after(10 , lambda  : self.set_appwindow(self.main_app))
 
         self.current_index = 0
+        self.char_length  = 0
 
         self.main_app.overrideredirect(True)
 
@@ -137,22 +167,36 @@ class Main_Page():
         self.button_frame.pack_propagate(0)
         self.button_under_frame = tk.Frame(self.button_frame, background=colors.clock_base , width=325  ,height=40)
         self.button_under_frame.pack_propagate(0)
+        
+        ''' Frame for showing planned completed and current task data 
+        Frames to be packed and unpacked for different frames '''
 
         # Making the Main frame in which the three frames will be placed : 
-        self.work_frame = tk.Frame(self.main_app  , background=colors.app_base) # setting another frame from custom tkitner inside this frame : it was red and will change this to app color later
-
+        self.planned_task_frame = tk.Frame(self.main_app  , background=colors.app_base) # setting another frame from custom tkitner inside this frame : it was red and will change this to app color later
+        self.current_task_frame  = tk.Frame(self.main_app , background=colors.app_base) # second frame for the planned task frame
+        self.completed_task_frame  = tk.Frame(self.main_app ,background=colors.app_base) # third frame for the completed tasks. 
         # Making two more frames on Temporary basis for changing the frames when the buttons are clicked : 
         
-       
-        self.scrollable_frame  = ctk.CTkScrollableFrame(self.work_frame , fg_color='transparent',  width=400 , height=300)
-
+       # loading the scrollable frame for all three task frames 
+        self.planned_task_scrollable_frame  = ctk.CTkScrollableFrame(self.planned_task_frame , fg_color='transparent',  width=400 , height=300)
+        self.current_task_scrollable_frame = ctk.CTkScrollableFrame(self.current_task_frame , fg_color='transparent' , width=400 , height=300)
+        self.completed_task_scrollable_frame  = ctk.CTkScrollableFrame(self.completed_task_frame , fg_color="transparent" , width=400 , height=300)
+        
+        
 
         # Three buttons are to be added as : planned task , current doing  , completed tasks
-        self.planned_task_button  = tk.Button(self.button_under_frame , text="Planned Task" )
+        self.planned_task_button  = tk.Button(self.button_under_frame , text="Planned Task" ,  command=lambda : self.frame_change("plannedtask") )
         self.current_seperator_1  = ttk.Separator(self.button_under_frame , orient='vertical')
         self.current_task_button  = tk.Button(self.button_under_frame , text="Current Task" , command=lambda : self.frame_change("currenttask"))
         self.current_seperator_2  = ttk.Separator(self.button_under_frame , orient='vertical')
         self.completed_task_button  = tk.Button(self.button_under_frame , text="Completed Task")
+        
+        
+        
+        # Making the right click button 
+        # 3 Menu bar to be made all 3 to be done : All three would point to a common function : 
+        self.planned_task_menu = Menu(self.planned_task_scrollable_frame , tearoff= 0 )
+        
 
         # configuring the controls: 
         self.app_titlebar_label.configure(font=fonts.super_small_bold)
@@ -173,9 +217,16 @@ class Main_Page():
         styles.Styles.button_styles(self.completed_task_button , colors.upper_tab_color , colors.text , colors.tab_color_unused  , colors.red_color)
         styles.Styles.button_styles(self.current_task_button , colors.upper_tab_color , colors.text , colors.tab_color_unused  , colors.red_color)
         
+    
+        
 
-
-
+        # configuring the tool tip for the controls : 
+        tooltip.ToolTip(self.settings_button , "Settings" , colors.app_base , colors.upper_tab_color)
+        tooltip.ToolTip(self.add_task_button , "Add Task" , colors.app_base , colors.upper_tab_color)
+        tooltip.ToolTip(self.planned_task_button, "Switch to planned task tab" , colors.app_base , colors.upper_tab_color)
+        tooltip.ToolTip(self.completed_task_button, "Switch to completed task tab" , colors.app_base , colors.upper_tab_color)
+        tooltip.ToolTip(self.current_task_button, "Switch to current task tab" , colors.app_base , colors.upper_tab_color)
+        
 
 
         # Binding the Frames : 
@@ -217,9 +268,8 @@ class Main_Page():
         self.current_seperator_2.pack(side='left' , pady=5 , padx=2 , fill='y')
         self.completed_task_button.pack(side='left', padx=10)
 
-        self.work_frame.pack(fill='both' , padx=10 , pady=10 , expand=True)
-        self.scrollable_frame.pack()
-
+        self.planned_task_frame.pack(fill='both' , padx=10 , pady=10 , expand=True)
+        self.planned_task_scrollable_frame.pack()
 
 
         self.main_app.mainloop()

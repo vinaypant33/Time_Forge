@@ -5,7 +5,7 @@ import fonts
 import styles
 
 
-root = tk.Tk()
+
 
 class Current_task():
     
@@ -20,6 +20,7 @@ class Current_task():
 
 
 if __name__ == '__main__':
+    root = tk.Tk()
     ct  = Current_task(root , 100 ,100)
     root.mainloop()
         
