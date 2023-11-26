@@ -16,6 +16,7 @@ from pubsub import pub
 import planned_task
 import current_task
 import tooltip
+import clock_frame
 
 class Main_Page():
 
@@ -64,6 +65,11 @@ class Main_Page():
         
 
     def adding_text(self ):
+        # Getting the height of the current frame : 
+        # self.planned_current_height  = self.planned_task_frame.winfo_height()
+        # print(self.planned_current_height)
+        # self.planned_current_width = self.planned_task_frame.winfo_width()
+        # print(self.planned_current_width)
         self.char_length = len(self.enter_text.get())
         if self.char_length < 1 : 
             messagebox.showerror("Task Forge" , "Please Enter Task : Empty Task Name")
@@ -72,7 +78,7 @@ class Main_Page():
                 self.getting_text  = self.enter_text.get()
                 self.enter_text.delete(0  ,tk.END)
                 self.current_index+=1
-                planned_task.Planned_Task(self.planned_task_scrollable_frame , 40  , 40 ,self.getting_text , self.current_index)
+                planned_task.Planned_Task(self.planned_task_scrollable_frame , 46 , 4 ,self.getting_text , self.current_index)
             else:
                 self.enter_text.delete(0  , tk.END)
         
@@ -86,7 +92,7 @@ class Main_Page():
                 self.getting_text  = self.enter_text.get()
                 self.enter_text.delete(0  ,tk.END)
                 self.current_index+=1
-                planned_task.Planned_Task(self.planned_task_scrollable_frame , 40  , 40 ,self.getting_text , self.current_index)
+                planned_task.Planned_Task(self.planned_task_scrollable_frame , 46  , 4 ,self.getting_text , self.current_index)
             else:
                 self.enter_text.delete(0  , tk.END)
                 
@@ -120,6 +126,10 @@ class Main_Page():
         self.main_app = tk.Tk()
         self.width  = width 
         self.height  = height
+        
+        ''' Make list for all three task lists whcih will be updated later using the database '''
+        
+        
         
         # calling the after functiion to call the min button for showing the bottom icon  : 
         self.main_app.after(10 , lambda  : self.set_appwindow(self.main_app))
@@ -158,8 +168,16 @@ class Main_Page():
 
         # Frame for the canvas ,  clock and current text with time : 
         self.add_task_button.configure(width=3)
-        self.clock_main_frame  = tk.Frame(self.main_app , background=colors.app_base , height=150 )
+        self.clock_main_frame  = tk.Frame(self.main_app , background=colors.app_base, height=150  , width=100)
+        '''Make the frame divided into two parts one with the current frame and the round clock button and one with the text with the round text part'''
+        
         self.clock_main_frame.pack_propagate(0)
+        # clock_height  = self.clock_main_frame.winfo_height() //2 
+        # clock_width  = self.clock_main_frame.winfo_width() // 2 
+        self.main_clock = tk.Frame(self.clock_main_frame, height=148 , width=200)
+        self.main_clock.pack_propagate(0)
+        
+        
         
         self.seperator   = tk.Frame(self.main_app , height=2 , background=colors.upper_tab_color) # To change the seperator later for more robust look and feel : make the whole app more material design
 
@@ -257,6 +275,13 @@ class Main_Page():
         self.add_task_button.grid(row=0 , column=2 , padx=4  , pady=5)
 
         self.clock_main_frame.pack(fill='x')
+        self.main_clock.pack(side='left')
+        self.another  = clock_frame.Clock(self.main_clock , 200 , 150) # will change the code later and wikk make the new part for the main codebase. 
+        self.another
+        self.another.change_with_time()
+        '''to change the above line to be used when the task is added in the main task bar '''
+        # Temporary making the clock run : 
+        # clock_frame.Clock.change_with_time(self.main_clock)
         self.seperator.pack(fill='x')
 
         self.button_frame.pack(fill='x')
