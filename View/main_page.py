@@ -120,7 +120,12 @@ class Main_Page():
             self.completed_task_frame.pack(fill='both' , padx=10 , pady=10 , expand=True)
             self.completed_task_scrollable_frame.pack()
             
-            
+    def adding_in_completed_tab(self , current_text):
+        self.text_label.configure(text=current_text)
+        current_task.Current_Task(self.current_task_scrollable_frame , 46, 4 , current_text , 1)
+        # pub.sendMessage('deleting_task')  # will change this later to delete the frame from the planned task bar 
+        
+       
 
     def __init__(self , width  , height) -> None:
         self.main_app = tk.Tk()
@@ -176,8 +181,9 @@ class Main_Page():
         # clock_width  = self.clock_main_frame.winfo_width() // 2 
         self.main_clock = tk.Frame(self.clock_main_frame, height=148 , width=200)
         self.main_clock.pack_propagate(0)
-        self.side_text_frame  = tk.Frame(self.clock_main_frame , background=colors.red_color , height=148  , width=200 )
+        self.side_text_frame  = tk.Frame(self.clock_main_frame , background=colors.app_base , height=148  , width=200 )
         self.text_label  = tk.Label(self.side_text_frame , text="Current Task Name")
+        
         self.side_text_frame.pack_propagate(0)
         self.text_label.configure(background=colors.app_base , foreground=colors.text , font=fonts.super_small_bold)
         self.seperator   = tk.Frame(self.main_app , height=2 , background=colors.upper_tab_color) # To change the seperator later for more robust look and feel : make the whole app more material design
@@ -300,7 +306,8 @@ class Main_Page():
         self.planned_task_frame.pack(fill='both' , padx=10 , pady=10 , expand=True)
         self.planned_task_scrollable_frame.pack()
 
-
+        # setting some message receivers which will be sent to the application text block and into the main planned text block
+        pub.subscribe(self.adding_in_completed_tab ,"adding_current_text")
         self.main_app.mainloop()
 
 

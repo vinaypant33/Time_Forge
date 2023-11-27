@@ -11,7 +11,11 @@ import tooltip
 class Planned_Task():
 
     def adding_text(self):
-        pass
+        pub.sendMessage("adding_current_text" , current_text = self.text.get("1.0", "end-1c"))
+        
+        # pub.subscribe(self.delete_current_task , "deleting_task")
+        # self.delete_current_task()
+        
     
     def delete_current_task(self):
         self.text.destroy()
@@ -41,7 +45,7 @@ class Planned_Task():
         # setting up a temporary button for deleting the currnet task : 
         self.delete_button  = tk.Button(self.inner_frame , text='\u2716' , command=self.delete_current_task , height=2  ,width=2)
         # Button for setting up the button to transfer the current task to the completed tab 
-        self.play_button   = tk.Button(self.inner_frame , text = "\u25B6" , height=2 ,  width=2 , font=fonts.super_small_bold)
+        self.play_button   = tk.Button(self.inner_frame , text = "\u25B6" , height=2 ,  width=2 , font=fonts.super_small_bold , command=self.adding_text)
         
         
         
