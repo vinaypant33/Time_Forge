@@ -168,7 +168,7 @@ class Main_Page():
 
         # Frame for the canvas ,  clock and current text with time : 
         self.add_task_button.configure(width=3)
-        self.clock_main_frame  = tk.Frame(self.main_app , background=colors.app_base, height=150  , width=100)
+        self.clock_main_frame  = tk.Frame(self.main_app , background=colors.app_base, height=150  )
         '''Make the frame divided into two parts one with the current frame and the round clock button and one with the text with the round text part'''
         
         self.clock_main_frame.pack_propagate(0)
@@ -176,9 +176,10 @@ class Main_Page():
         # clock_width  = self.clock_main_frame.winfo_width() // 2 
         self.main_clock = tk.Frame(self.clock_main_frame, height=148 , width=200)
         self.main_clock.pack_propagate(0)
-        
-        
-        
+        self.side_text_frame  = tk.Frame(self.clock_main_frame , background=colors.red_color , height=148  , width=200 )
+        self.text_label  = tk.Label(self.side_text_frame , text="Current Task Name")
+        self.side_text_frame.pack_propagate(0)
+        self.text_label.configure(background=colors.app_base , foreground=colors.text , font=fonts.super_small_bold)
         self.seperator   = tk.Frame(self.main_app , height=2 , background=colors.upper_tab_color) # To change the seperator later for more robust look and feel : make the whole app more material design
 
         self.button_frame = tk.Frame(self.main_app  , height=60 , background=colors.app_base ) # will give this color later when testing the
@@ -283,7 +284,10 @@ class Main_Page():
         # Temporary making the clock run : 
         # clock_frame.Clock.change_with_time(self.main_clock)
         self.seperator.pack(fill='x')
-
+        
+        ''' Side text frame in which the label will be added : to be changed in the label part'''
+        self.side_text_frame.pack(side='right')
+        self.text_label.pack(side='top' , pady=10)
         self.button_frame.pack(fill='x')
         self.button_under_frame.pack(padx=20 , pady=10)
 

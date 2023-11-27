@@ -11,7 +11,7 @@ class Clock():
         self.main_clock  = master_frame
         self.width  = width
         self.height  = height
-        
+        self.main_clock.configure(background = colors.app_base)
         self.start_angle = 90
         self.arc_length  = 0
         self.radius  = 65
