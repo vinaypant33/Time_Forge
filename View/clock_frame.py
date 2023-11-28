@@ -60,6 +60,10 @@ class Clock():
         
         self.clock_canvas.update()
         self.main_clock.after(1000 , self.change_with_time)
+    
+    def reset_time_frame(self):
+        self.current_text = 0 
+        
         
 
 if __name__ == '__main__':

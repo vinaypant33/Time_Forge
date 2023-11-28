@@ -28,6 +28,5 @@ def main():
     main_page.Main_Page(400 , 600) 
     
 
-
 if __name__ == '__main__':
     main()

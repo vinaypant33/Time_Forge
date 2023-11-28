@@ -123,6 +123,8 @@ class Main_Page():
     def adding_in_completed_tab(self , current_text):
         self.text_label.configure(text=current_text)
         self.another.change_with_time()
+        # reset the clock frame and make it zero again:
+        
         current_task.Current_Task(self.current_task_scrollable_frame , 46, 4 , current_text , 1)
        
 
