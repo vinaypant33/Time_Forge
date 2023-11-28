@@ -2,8 +2,10 @@ import tkinter as tk
 from math import sin , cos , radians
 import colors
 import time
-
+import fonts
 from pubsub import pub
+
+
 
 class Clock():
     
@@ -15,6 +17,7 @@ class Clock():
         self.start_angle = 90
         self.arc_length  = 0
         self.radius  = 65
+        self.current_ticks  = 0 # make the text for the clock canvas and make the text in the center of the canvas : 
         self.clock_canvas  = tk.Canvas(self.main_clock , width  = self.width , height = self.height , bg=colors.app_base)
         self.clock_canvas.pack()
         
@@ -23,15 +26,29 @@ class Clock():
         
 
         # Make the Arc for tkinter canvas : 
-        self.clock_arc  = self.clock_canvas.create_arc(10,10,150,150 , start = self.start_angle , extent  = self.arc_length ,fill='blue', outline=colors.text, width=5, style='arc')
+        self.clock_arc  = self.clock_canvas.create_arc(10,10,150,150 , start = self.start_angle , extent  = self.arc_length , outline=colors.text, width=5, style='arc')
         
         center_angle = self.start_angle + self.arc_length / 2
         center_x_arc = self.center_x + self.radius * cos(radians(center_angle))
         center_y_arc = self.center_y + self.radius * sin(radians(center_angle))
         # self.clock_canvas.create_text(center_x_arc, center_y_arc, text="Center Text", font=('Arial', 10))
+        self.current_text  = tk.Label(self.clock_canvas , text=str(self.current_ticks) , background=colors.app_base , foreground=colors.text , font=fonts.clock_tick_bold)
+        self.current_text.place(x = 95 , y = 58)
     
     def change_with_time(self):
         self.arc_length+=6
+        if self.current_ticks == 60:
+            self.current_ticks = 0
+        else:
+            self.current_ticks+=1
+            if self.current_ticks < 9 : 
+                self.current_text.destroy()
+                self.current_text  = tk.Label(self.clock_canvas , text=str(self.current_ticks) , background=colors.app_base , foreground=colors.text , font=fonts.clock_tick_bold)
+                self.current_text.place(x = 95 , y = 58)
+            else:
+                self.current_text.destroy()
+                self.current_text  = tk.Label(self.clock_canvas , text=str(self.current_ticks) , background=colors.app_base , foreground=colors.text , font=fonts.clock_tick_bold)
+                self.current_text.place(x = 92 , y = 58)
         self.clock_canvas.delete(self.clock_arc)  
         
         end_angle = self.start_angle + self.arc_length

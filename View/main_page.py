@@ -122,7 +122,10 @@ class Main_Page():
             
     def adding_in_completed_tab(self , current_text):
         self.text_label.configure(text=current_text)
+        self.another.change_with_time()
         current_task.Current_Task(self.current_task_scrollable_frame , 46, 4 , current_text , 1)
+       
+
         # pub.sendMessage('deleting_task')  # will change this later to delete the frame from the planned task bar 
         
        
@@ -285,7 +288,7 @@ class Main_Page():
         self.main_clock.pack(side='left')
         self.another  = clock_frame.Clock(self.main_clock , 200 , 150) # will change the code later and wikk make the new part for the main codebase. 
         self.another
-        self.another.change_with_time()
+        # self.another.change_with_time()
         '''to change the above line to be used when the task is added in the main task bar '''
         # Temporary making the clock run : 
         # clock_frame.Clock.change_with_time(self.main_clock)
