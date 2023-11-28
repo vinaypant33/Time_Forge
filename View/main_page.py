@@ -124,7 +124,7 @@ class Main_Page():
         self.text_label.configure(text=current_text)
         self.another.change_with_time()
         # reset the clock frame and make it zero again:
-        
+        # self.another.reset_time_frame()
         current_task.Current_Task(self.current_task_scrollable_frame , 46, 4 , current_text , 1)
        
 
