@@ -6,9 +6,6 @@ sys.path.append('View')
 import tkinter as tk 
 from tkinter import ttk 
 
-
-
-
 # Importing Program made files  : 
 from Model import database
 from Model import functions
@@ -18,11 +15,6 @@ from View import main_page
 
 # For Message Passing  : 
 from pubsub import pub
-
-
-
-
-
 
 def main():
     main_page.Main_Page(400 , 600) 
