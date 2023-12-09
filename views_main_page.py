@@ -26,7 +26,7 @@ class Main_Page():
         self.sidebar = tk.Frame(self.main_page , height=900 , width=150 , background=colors.sidebar)
         self.sidebar.pack_propagate(0)
         
-
+        
 
 
 
