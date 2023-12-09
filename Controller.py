@@ -1,24 +1,6 @@
-import sys
+''' Main controller file to control the whole app : 
+only app based modules to be imported'''
 
-sys.path.append('View')
-
-import tkinter as tk 
-from tkinter import ttk 
-
-# Importing Program made files  : 
-from Model import database
-from Model import functions
-
-# For Views 
-from View import main_page
-
-# For Message Passing  : 
-from pubsub import pub
+import views_main_page
 
 
-def main():
-    main_page.Main_Page(400 , 600) 
-    
-
-if __name__ == '__main__':
-    main()
