@@ -1,5 +1,7 @@
 app_base  = "#FFFFFF"
 sidebar = "#382F9C"
-tabs_color  = "#A0A1AC"
-round_bar = "#B5B6BF"
+golden_color = "#EBBF41"
+pinkish_color  = "#F43984"
+
+dark_theme_app_base  = "#232135"
 
