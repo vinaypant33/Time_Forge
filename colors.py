@@ -5,3 +5,8 @@ pinkish_color  = "#F43984"
 
 dark_theme_app_base  = "#232135"
 
+white_color  = "white"
+black_color  = "black"
+
+
+grey_background  = "#989AA8"
